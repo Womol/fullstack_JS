@@ -1,2 +1,1 @@
-# fullstack_JS
-репозиторий для выполнения домашнего задания по курсу JS
+## Репозиторий для курса ["Продвинутый Javascript"](https://thinknetica.com/fullstack_javascript) от школы  Thinknetica
