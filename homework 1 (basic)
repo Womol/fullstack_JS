@@ -1,0 +1,458 @@
+"use strict";
+
+/*
+
+́1. Написать код расчета площади правильного треугольника
+́У пользователя запрашивается длина стороны. Посчитать и вывести площадь треугольника.
+́Формула для вычисления площади треугольника: www.webmath.ru
+
+*/
+
+function triangleArea () {
+	let area = 0;
+	let side = Number(prompt("Введите длину стороны треугольника", 1));
+	
+	if (side <= 0) {
+		alert('Такого треугольника не может существовать!');
+		return triangleArea ();
+	} 
+	else {
+		area = (side**2 * Math.sqrt(3)) / 4;
+		console.log("площадь треугольника = " + area);
+		alert('округлённая площадь треугольника = ' + Math.round(area));
+	};
+};
+triangleArea ();
+
+/*
+
+2. Написать алгоритм кодирования идентификатора (задача, обратная тому, что показано в уроке).
+Шестнадцатиричный код AAAAAAAABBCDDDDDD
+А. метка времени (timestamp в секундах)
+B. кластер
+C. тип
+D. идентификатор пользователя
+Все входные данные - целые десятичные числа (значения можно “зашить” прямо в код решения).
+
+A A A A A A A A B B C  D  D  D  D  D  D
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+5 e e f e 1 c 6 0 d 2  6  3  e  c  6  3
+
+*/
+
+const date_ = String(new Date());
+const dateArrayFirst = date_.split('(');
+const dateArrayFinish = dateArrayFirst.shift();
+const timestamp = Date.parse(dateArrayFinish)/1000;
+console.log(timestamp);
+
+function encodingAlgorithm (timestamp, claster, type, user) {
+	console.log(timestamp, claster, type, user);
+
+ 	let a = timestamp.toString(16);
+ 	let b = claster.toString(16);
+ 	if (b.length <= 1) b = '0' + b;
+ 	let c = type.toString(16);
+ 	let d = user.toString(16);
+ 	let id = a + b + c + d;	
+
+	console.log("Закодированный идентификатор: " + id);
+ 	alert(id);
+ 	return(id);
+};
+
+const test1 = encodingAlgorithm (timestamp, 13, 2, 6548579);
+console.log('test1 = ' + test1);
+
+
+// function decodingAlgorithm(id) {
+// 	let a = id.substring(0, 8);
+//  	let b = id.substring(8, 10);
+//  	let c = id.substring(10, 11);
+//  	let d = id.substring(11);
+//  	let idOject = {
+//  		timestamp: parseInt(a, 16),
+//  		claster: parseInt(b, 16),
+//  		type: parseInt(c, 16),
+//  		user: parseInt(d, 16)
+//  	};
+// 
+//  	alert(idOject.timestamp, idOject.claster, idOject.type, idOject.user);
+//  	return(idOject);
+// };
+// 
+// const test2 = decodingAlgorithm (test1);
+// console.log('test2 = ' + test2);
+
+/*
+
+3. Валидировать и переформатировать введенную пользователем дату из Американского в Российский стандарт
+Американский формат: ММ/ЧЧ/ГГГГ например: 5/30/2006
+Российский формат: ЧЧ.ММ.ГГГГ например: 30.05.2006
+
+*/
+
+function conversionDate() {
+
+	let inputDate = prompt('Введите дату в формате ММ/ЧЧ/ГГГГ', '05/30/2006');
+	let dateArray = inputDate.split('/');
+
+	if (dateArray[0] < 1 || dateArray[0] > 12) {
+		alert('Такого месяца не может быть! \nПожалуйста, введите дату заново.');
+		return conversionDate();
+	};
+	if (dateArray[0].length < 2) {
+		dateArray[0] = '0' + dateArray[0];
+	};
+
+	if (dateArray[1] < 1 || dateArray[1] > 31) {
+		alert('Такого числа не может быть! \nПожалуйста, введите дату заново.');
+		return conversionDate();
+	};
+	if (dateArray[1].length < 2) {
+		dateArray[1] = '0' + dateArray[1];
+	};
+
+	if (dateArray[2].length < 4 || dateArray[2].length > 4) {
+		alert('Год должен состоять из 4 цифр! \nПожалуйста, введите дату заново.');
+		return conversionDate();
+	};
+	let correctDate = dateArray[1] + '.' + dateArray[0] + '.' + dateArray[2] + 'г';
+
+	alert('Ваша дата в российском формате: ' + correctDate);
+};
+
+conversionDate();
+
+/*
+
+4. Среднее арифметическое
+Запрашивать у пользователя (prompt) числа пока пользователь не введет пустое значение.
+После ввода каждого числа выводить в консоль предварительный итог.
+По завершению (когда пользователь ввел пустое значение) отобразить (alert) сумму, количество чисел и среднее арифметическое .
+
+*/
+
+function averageValue() {
+		
+		let sumObj = {
+			count: 0,
+			sum: 0,
+			average: 0
+		};
+
+	function inputValue() {
+
+		let value = Number(prompt('Введите число', ''));
+
+		if (isNaN(value)) {
+			alert('Введите именно число');
+			return inputValue();
+		};
+		
+		if (value) {
+			sumObj.count ++;
+			sumObj.sum = sumObj.sum + value;
+			sumObj.average = sumObj.sum/sumObj.count;
+			console.log({
+				'Последнее введённое число = ': value,
+				'Количество введённых чисел = ': sumObj.count,
+				'Среднее арифметическое = ': sumObj.average,
+				'Сумма введённых чисел = ': sumObj.sum,
+		});
+			inputValue();
+		};
+
+		if (!value) {
+			alert('Сумма = ' + sumObj.sum + '\n' + 'Количество чисел = ' + sumObj.count + '\n' + 'Среднее арифметическое = ' + sumObj.average);
+		};
+	};
+	return inputValue();
+
+};
+
+averageValue();
+
+/*
+
+5. Подсчитать в тексте количество букв
+Запрашивать у пользователя текст, а затем выводить количество гласных и согласных букв в введенном тексте. Алфавит латинский.
+
+*/
+
+function amountOfWords(text) {
+	let inputText = '';
+	let wordsString = '';
+	let symbolsString = '';
+	let words = {
+		vowels: {
+			description: 'Количество гласных в тексте',
+			amount: 0
+		},
+		consonants: {
+			description: 'Количество согласных в тексте',
+			amount: 0
+		},
+		sum: {
+			description: 'Общее количество букв в тексте',
+			amount: 0
+		},
+		symbols: { 
+			description: 'Общее количество символов в тексте',
+			amount: 0,
+			list: {
+				44: {
+					description: ',',
+					amount: 0
+				},
+				46: {
+					description: '.',
+					amount: 0
+				},
+				47: {
+					description: '/',
+					amount: 0
+				},
+				33: {
+					description: '!',
+					amount: 0
+				},
+				63: {
+					description: '?',
+					amount: 0
+				},
+				32: {
+					description: "' '",
+					amount: 0
+				},
+				91: {
+					description: '[',
+					amount: 0
+				},
+				93: {
+					description: ']',
+					amount: 0
+				},
+				123: {
+					description: '{',
+					amount: 0
+				},
+				125: {
+					description: '}',
+					amount: 0
+				},
+				124: {
+					description: '|',
+					amount: 0
+				},
+				34: {
+					description: '"',
+					amount: 0
+				},
+				39: {
+					description: '\'',
+					amount: 0
+				},
+				42: {
+					description: '*',
+					amount: 0
+				},
+				45: {
+					description: '-',
+					amount: 0
+				},
+				8112: {
+					description: '—',
+					amount: 0
+				},
+				58: {
+					description: ':',
+					amount: 0
+				},
+				59: {
+					description: ';',
+					amount: 0
+				},
+				40: {
+					description: '(',
+					amount: 0
+				},
+				41: {
+					description: ')',
+					amount: 0
+				},
+				34: {
+					description: '`',
+					amount: 0
+				}
+			},
+		},
+	};
+
+	if (!text) {
+		inputText = prompt('Введите текст для анализа.\nТекст должен быть на английском языке.');
+			if (!inputText) {
+				if (confirm('Вы не ввели никакого текста.\nВы хотите продолжить?')){
+					return amountOfWords(text);
+				} else {
+					alert('Всего доброго!');
+				};
+		//console.log('Введите текст');
+		};
+	} else {
+		inputText = text;
+		//console.log('Текст введён');
+	};
+
+	if (inputText){
+
+		inputText = inputText.toLocaleLowerCase();
+		//console.log('Введена строка: ' + inputText);
+		words.symbols.amount = inputText.length;
+	
+	for (let i = 0; i < inputText.length; i++) {
+		if ( inputText[i].charCodeAt(0) >= 97 && inputText[i].charCodeAt(0) <= 122 ){
+				wordsString += inputText[i];				
+		} else {
+				symbolsString += inputText[i];
+		};
+	};
+	console.log('Строка с символами: ' + symbolsString);
+	//console.log('Строка с символами: ' + wordsString);
+	words.sum.amount = wordsString.length;
+
+
+	for (let i = 0; i < wordsString.length; i++){
+		// ищем количество гласных в строке wordsString и записываем в объект гласных 
+		if (	wordsString[i].charCodeAt(0) === 97 || 
+				wordsString[i].charCodeAt(0) === 101 || 
+				wordsString[i].charCodeAt(0) === 105 || 
+				wordsString[i].charCodeAt(0) === 111 || 
+				wordsString[i].charCodeAt(0) === 117 || 
+				wordsString[i].charCodeAt(0) === 121  ) {
+					//console.log('Гласная: ' + wordsString[i]);
+					words.vowels.amount ++;
+		} else {
+			words.consonants.amount ++; //оставшиеся символы записываем в объект согласных
+		};
+	};
+		//остальные символы записываем в объект символом
+	for (let i = 0; i < symbolsString.length; i++) {
+		let  keyCode = symbolsString[i].charCodeAt(0);
+		for (let prop in words.symbols.list){
+			if (prop == keyCode){
+			words.symbols.list[keyCode].amount++;
+			};
+		};
+	};
+	
+	};
+	let charArray = [];
+	charArray.toString = function (){
+		let charString = '';
+		for (let i = 0; i < charArray.length; i++){
+			charString = charString + charArray[i]; // + '\n';
+		}
+		return charString;
+	};
+
+	for (let prop in words.symbols.list){
+			if (words.symbols.list[prop].amount !== 0){
+			charArray.push('Количество ' + words.symbols.list[prop].description + ' в тексте = ' + words.symbols.list[prop].amount + '\n');
+			//alert('Количество ' + words.symbols.list[prop].description + ' в тексте = ' + words.symbols.list[prop].amount);
+			//console.log('Количество ' + words.symbols.list[prop].description + ' в тексте = ' + words.symbols.list[prop].amount);
+			//console.log(charArray);
+			};
+		};
+
+	console.log(charArray);	
+	if (confirm('Вам нужно вывести количество пунктуационных знаков в тексте?')){
+		alert('Гласных букв в тексте: ' + words.vowels.amount + 
+			'\nСогласных букв в тексте: ' + words.consonants.amount +
+			'\nОбщее количество букв в тексте: ' + words.sum.amount +
+			'\nОбщее количество символов в тексте: ' + words.symbols.amount);
+		alert(charArray);
+	} else {
+		alert('Гласных букв в тексте: ' + words.vowels.amount + 
+			'\nСогласных букв в тексте: ' + words.consonants.amount +
+			'\nОбщее количество букв в тексте: ' + words.sum.amount +
+			'\nОбщее количество символов в тексте: ' + words.symbols.amount);
+	};
+
+	//console.log(words);
+	return words;
+};
+
+let result = amountOfWords();
+
+/*
+
+6. Постройте алгоритм реверсии слова
+Например, если аргумент слово «cat», то результатом должно быть слово «tac».
+Слово запрашивать у пользователя
+
+*/
+
+function flipWord() {
+	let flipped = '';
+	let word = prompt('Введите слово');
+	console.log('Слово - ' + word);
+	//wordArray = word.split('');
+	//console.log('Массив: ' + wordArray);
+	for (let i = (word.length - 1) ; i >=0 ; i--) {
+		flipped += word[i];
+	};
+	console.log('Перевёрнутое слово - ' + flipped);
+	alert(flipped);
+	return flipped;
+};
+
+flipWord();
+/*
+
+7. Напишите программу, позволяющую удалить все лишние пробелы в тексте оставив по одному.
+Текст запрашивать у пользователя
+
+*/
+
+
+function removeSpaces(text) {
+	let inputText = '';
+    let fixedString = '';
+    let count = 0; 
+
+    if (!text) {
+		inputText = prompt('Введите свой текст.');
+			if (!inputText) {
+				if (confirm('Вы не ввели никакого текста.\nВы хотите продолжить?')){
+					removeSpaces(text);
+				} else {
+					alert('Всего доброго!');
+				};
+		};
+	} else {
+		inputText = text;
+	};
+
+    inputText.split('').forEach(function (value, index, array) {
+    	let next = array[index + 1];
+    	let keyCode = value.charCodeAt();
+    	let isChar = ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122));
+     	if (value === ' ') { 
+     		count++; 
+     	} else if (count > 0 && value !== ' ') {
+      		fixedString += ((next && next !== ' ') || (fixedString.length > 0 && isChar) ? ' ' : '') + value; 
+      		count = 0; 
+     	} else { 
+      		fixedString += value; 
+     	};
+    }); 
+    alert(fixedString);
+    return fixedString; 
+};
+
+let text = "  Hello   world !  How are u   ? "; 
+
+removeSpaces();
+removeSpaces(text);
+
